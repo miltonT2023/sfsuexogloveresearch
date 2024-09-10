@@ -1,0 +1,47 @@
+function [test_accuracy, test_accuracy_MV] = LDA_test_accuracy(TestResult,TestLabel,m)
+
+test_num_correct=0;
+test_num_correct_MV=0;
+TestResult_MV =[];
+
+for i= 1:size(TestResult,1)
+    if TestResult(i)==TestLabel(i)
+        test_num_correct=test_num_correct+1;
+    end
+end
+
+for i= 1:size(TestResult,1)
+    if i > m && i <= size(TestResult,1)-m
+        TestResult_MV(i)=mode(TestResult(i-m:i+m));
+    else
+        TestResult_MV(i)=TestResult(i);
+    end
+    if TestResult_MV(i)==TestLabel(i)
+        test_num_correct_MV=test_num_correct_MV+1;
+    end
+end
+test_accuracy=test_num_correct/size(TestResult,1);
+test_accuracy_MV=test_num_correct_MV/size(TestResult,1);
+figure
+plot(TestResult,'-o',...
+                'MarkerEdgeColor','r',...
+                'MarkerSize',5,...
+                'LineStyle','none');
+hold on
+plot(TestLabel+0.2,'-o',...
+                'MarkerEdgeColor','k',...
+                'MarkerSize',5,...
+                'LineStyle','none');
+hold off
+
+figure
+plot(TestResult_MV, '-o',...
+                'MarkerEdgeColor','r',...
+                'MarkerSize',5,...
+                'LineStyle','none');
+hold on
+plot(TestLabel+0.2,'-o',...
+                'MarkerEdgeColor','k',...
+                'MarkerSize',5,...
+                'LineStyle','none');
+end
